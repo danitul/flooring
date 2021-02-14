@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :partners, only: [:show]
+      get 'partners/match/:customer_request_id', to: 'partners#index'
     end
   end
 end
