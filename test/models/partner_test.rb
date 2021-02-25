@@ -20,6 +20,12 @@ describe Partner do
         create(:partner, materials: ['abc'])
       end
     end
+
+    it "does not create a partner with an invalid area range" do
+      assert_raises ActiveRecord::RecordInvalid do
+        create(:partner, min_area: 10, max_area: 5)
+      end
+    end
   end
 
   describe 'scopes' do

@@ -4,6 +4,7 @@ class Partner < ApplicationRecord
   MATERIALS = %w[wood carpet tiles]
 
   validate :validate_materials
+  validate :min_is_less_than_max
 
   scope :within_radius, -> (lat, lng) { where("acos(sin(lat) * sin(?) + cos(lat) * cos(?) * cos(lng - ?)) * 6371 <= radius", lat, lat, lng) }
   scope :with_expertise, -> (expertise) { where('?=ANY(materials)', expertise) }
@@ -31,6 +32,10 @@ class Partner < ApplicationRecord
         errors.add(:materials_list, material + " is an unknown material")
       end
     end
+  end
+
+  def min_is_less_than_max
+    errors.add(:min_area, "can't be greater than max_area") if min_area > max_area
   end
 
 end
