@@ -20,6 +20,7 @@ class Api::V1::PartnersController < ApplicationController
       partners = Partner.select_with_distance_from_home(customer_request.lat, customer_request.lng)
                         .with_expertise(customer_request.material)
                         .within_radius(customer_request.lat, customer_request.lng)
+                        .within_area(customer_request.area)
                         .order_by_rating
                         .order_by_distance_from_home
       render json: partners.to_json, status: 200

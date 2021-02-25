@@ -47,6 +47,7 @@ class Api::V1::PartnersControllerTest < ActionDispatch::IntegrationTest
 
         json = JSON.parse(@response.body)
         assert_response :success
+        assert_equal 3, json.count
         assert_equal [partner5.id, partner3.id, partner2.id], [json[0]['id'], json[1]['id'], json[2]['id']]
       end
 
