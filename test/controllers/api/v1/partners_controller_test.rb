@@ -40,9 +40,10 @@ class Api::V1::PartnersControllerTest < ActionDispatch::IntegrationTest
       let (:partner3) { create(:partner, lat: 13.023111, lng: 79.881900, radius: 100, materials: ['carpet', 'wood'], rating: 4) }
       let (:partner4) { create(:partner, lat: 39.013111, lng: 19.891900, radius: 100, materials: ['tiles']) }
       let (:partner5) { create(:partner, lat: 13.016111, lng: 79.861900, radius: 200, materials: ['carpet'], rating: 5) }
+      let (:partner6) { create(:partner, lat: 13.016111, lng: 79.861900, radius: 200, materials: ['carpet'], min_area: 100, max_area: 1000) }
 
       it 'should return all the partners matching the customer request in order, first by rating and then by distance' do
-        partner1; partner2; partner3; partner4; partner5
+        partner1; partner2; partner3; partner4; partner5; partner6
         get "#{url}/match/#{customer_request.id}"
 
         json = JSON.parse(@response.body)
