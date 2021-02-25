@@ -7,6 +7,7 @@ class Partner < ApplicationRecord
 
   scope :within_radius, -> (lat, lng) { where("acos(sin(lat) * sin(?) + cos(lat) * cos(?) * cos(lng - ?)) * 6371 <= radius", lat, lat, lng) }
   scope :with_expertise, -> (expertise) { where('?=ANY(materials)', expertise) }
+  scope :within_area, -> (area) { where("min_area <= ? AND max_area >= ?", area, area) }
 
   scope :order_by_rating, -> { order(rating: :desc) }
   scope :order_by_distance_from_home, -> { order(:distance) }
