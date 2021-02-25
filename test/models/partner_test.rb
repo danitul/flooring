@@ -20,6 +20,12 @@ describe Partner do
         create(:partner, materials: ['abc'])
       end
     end
+
+    it "does not create a partner with an invalid area range" do
+      assert_raises ActiveRecord::RecordInvalid do
+        create(:partner, min_area: 10, max_area: 5)
+      end
+    end
   end
 
   describe 'scopes' do
@@ -34,6 +40,21 @@ describe Partner do
         partners = Partner.with_expertise(['carpet'])
         assert_equal 2, partners.size
         assert_equal [partner2.id, partner4.id], [partners.first.id, partners.last.id]
+      end
+    end
+
+    describe 'within floor area range' do
+      let(:partner1) { create(:partner, min_area: 5, max_area: 8) }
+      let(:partner2) { create(:partner, min_area: 5, max_area: 20) }
+      let(:partner3) { create(:partner, min_area: 10, max_area: 100) }
+      let(:partner4) { create(:partner, min_area: 5, max_area: 10) }
+      let(:partner5) { create(:partner, min_area: 50, max_area: 100) }
+
+      it 'should return only partners within  a specific expertise' do
+        partner1; partner2; partner3; partner4; partner5
+        partners = Partner.within_area(10)
+        assert_equal 3, partners.size
+        assert_equal [partner2.id, partner3.id, partner4.id].sort, [partners.first.id, partners.second.id, partners.last.id].sort
       end
     end
 
